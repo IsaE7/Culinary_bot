@@ -30,6 +30,9 @@ async def send_welcome(message: types.Message):
             ],
             [
                 types.InlineKeyboardButton(text='Jobs', callback_data="jobs"),
+            ],
+            [
+                types.InlineKeyboardButton(text="leave feedback", callback_data="feedback"),
             ]
         ]
     )
