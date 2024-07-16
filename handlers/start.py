@@ -52,3 +52,7 @@ async def review(call: types.CallbackQuery):
 @start_router.callback_query(F.data == 'jobs')
 async def jobs(call: types.CallbackQuery):
     await call.answer('coming soon')
+
+
+
+
