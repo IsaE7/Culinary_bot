@@ -38,11 +38,6 @@ async def start_review(call: types.CallbackQuery, state: FSMContext):
 
 @review_router.message(CulinaryReview.name)
 async def process_name(message: types.Message, state: FSMContext):
-    user_id = message.from_user.id
-    if user_id in user_reviews:
-        await message.answer("You have already left a review.")
-        await state.clear()
-    else:
         await message.answer("Your Instagram name: ")
         await state.set_state(CulinaryReview.instagram_username)
         await state.update_data(name=message.text)
@@ -52,11 +47,6 @@ async def process_name(message: types.Message, state: FSMContext):
 
 @review_router.message(CulinaryReview.instagram_username)
 async def process_instagram(message: types.Message, state: FSMContext):
-    user_id = message.from_user.id
-    if user_id in user_reviews:
-        await message.answer("You have already left a review.")
-        await state.clear()
-    else:
         await message.answer("Your visit date: ")
         await state.set_state(CulinaryReview.visit_date)
         await state.update_data(instagram_username=message.text)
@@ -66,16 +56,11 @@ async def process_instagram(message: types.Message, state: FSMContext):
 
 @review_router.message(CulinaryReview.visit_date)
 async def process_visit_date(message: types.Message, state: FSMContext):
-    user_id = message.from_user.id
-    if user_id in user_reviews:
-        await message.answer("You have already left a review.")
-        await state.clear()
-    else:
         await state.set_state(CulinaryReview.food_rating)
         kb = types.ReplyKeyboardMarkup(
             keyboard=[
-                [types.KeyboardButton(text='bad', callback_data='5')],
-                [types.KeyboardButton(text='good', callback_data='10')],
+                [types.KeyboardButton(text='bad',)],
+                [types.KeyboardButton(text='good',)],
             ],
             resize_keyboard=True
         )
@@ -87,16 +72,11 @@ async def process_visit_date(message: types.Message, state: FSMContext):
 
 @review_router.message(CulinaryReview.food_rating)
 async def process_food_rating(message: types.Message, state: FSMContext):
-    user_id = message.from_user.id
-    if user_id in user_reviews:
-        await message.answer("You have already left a review.")
-        await state.clear()
-    else:
         await state.set_state(CulinaryReview.cleanliness_rating)
         kb = types.ReplyKeyboardMarkup(
             keyboard=[
-                [types.KeyboardButton(text='bad', callback_data='5')],
-                [types.KeyboardButton(text='good', callback_data='10')],
+                [types.KeyboardButton(text='bad',)],
+                [types.KeyboardButton(text='good',)],
             ],
             resize_keyboard=True
         )
@@ -108,11 +88,6 @@ async def process_food_rating(message: types.Message, state: FSMContext):
 
 @review_router.message(CulinaryReview.cleanliness_rating)
 async def cleanliness_rating(message: types.Message, state: FSMContext):
-    user_id = message.from_user.id
-    if user_id in user_reviews:
-        await message.answer("You have already left a review.")
-        await state.clear()
-    else:
         await state.set_state(CulinaryReview.extra_comments)
         kb = types.ReplyKeyboardRemove()
         await message.answer('Do you have any comments: ', reply_markup=kb)
@@ -123,13 +98,7 @@ async def cleanliness_rating(message: types.Message, state: FSMContext):
 
 @review_router.message(CulinaryReview.extra_comments)
 async def process_extra_comments(message: types.Message, state: FSMContext):
-    user_id = message.from_user.id
-    if user_id in user_reviews:
-        await message.answer("You have already left a review.")
-        await state.clear()
-    else:
         await message.answer("Your review has been accepted.")
-        user_reviews[user_id] = True
         await state.update_data(extra_comments=message.text)
         data = await state.get_data()
         print(data['extra_comments'])
@@ -137,5 +106,5 @@ async def process_extra_comments(message: types.Message, state: FSMContext):
             INSERT INTO survey_results(name, visit_date, instagram_name,
             food_rating, cleanliness_rating, extra_comments)
             VALUES (?, ?, ?, ?, ?, ?)
-        """, (data['name'], data['20-06-2014'], data['IsaE7'], data['5'], data ['10'], data ['text']))
+        """, (data['name'], data['visit_date'], data['instagram_username'], data['food_rating'], data ['cleanliness_rating'], data ['extra_comments']))
         await state.clear()

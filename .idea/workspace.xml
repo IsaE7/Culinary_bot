@@ -5,14 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="78011b36-2b4e-411a-bc85-f4ea9f12fabc" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/database/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/database/database.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/database/queries.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/handlers/review_dialog.py" beforeDir="false" afterPath="$PROJECT_DIR$/handlers/review_dialog.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -147,7 +142,7 @@
       <workItem from="1720606019396" duration="651000" />
       <workItem from="1720688029488" duration="14644000" />
       <workItem from="1720858435168" duration="344000" />
-      <workItem from="1720859151296" duration="25245000" />
+      <workItem from="1720859151296" duration="27670000" />
     </task>
     <servers />
   </component>
@@ -155,7 +150,7 @@
     <option name="version" value="3" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/Culinary_bot$main.coverage" NAME="main Coverage Results" MODIFIED="1721052101271" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Culinary_bot$main.coverage" NAME="main Coverage Results" MODIFIED="1721125118887" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Culinary_bot$start.coverage" NAME="start Coverage Results" MODIFIED="1720858342757" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/handlers" />
     <SUITE FILE_PATH="coverage/Culinary_bot$Culinary_bot.coverage" NAME="Culinary_bot Coverage Results" MODIFIED="1720693336601" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Culinary_bot$dishes.coverage" NAME="dishes Coverage Results" MODIFIED="1720699750208" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/handlers" />
