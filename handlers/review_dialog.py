@@ -1,4 +1,4 @@
-from contourpy.util import data
+import re
 
 from config import bot, dp
 from aiogram import types, Router, F
@@ -27,7 +27,6 @@ user_reviews = {}
 @review_router.callback_query(F.data == 'feedback')
 async def start_review(call: types.CallbackQuery, state: FSMContext):
     user_id = call.from_user.id
-
     if user_id in user_reviews:
         await call.message.answer("You have already left a review.")
         await state.clear()
@@ -56,6 +55,8 @@ async def process_instagram(message: types.Message, state: FSMContext):
 
 @review_router.message(CulinaryReview.visit_date)
 async def process_visit_date(message: types.Message, state: FSMContext):
+    visit_date_pattern = message.text
+    if not re.match(r'^\d{2}\.\d{2}$', visit_date_pattern):
         await state.set_state(CulinaryReview.food_rating)
         kb = types.ReplyKeyboardMarkup(
             keyboard=[
@@ -72,18 +73,21 @@ async def process_visit_date(message: types.Message, state: FSMContext):
 
 @review_router.message(CulinaryReview.food_rating)
 async def process_food_rating(message: types.Message, state: FSMContext):
-        await state.set_state(CulinaryReview.cleanliness_rating)
-        kb = types.ReplyKeyboardMarkup(
-            keyboard=[
-                [types.KeyboardButton(text='bad',)],
-                [types.KeyboardButton(text='good',)],
-            ],
+    if message.text not in ['good', 'bad']:
+        await message.answer("Please enter 'good' or 'bad'.")
+        return
+    await state.set_state(CulinaryReview.cleanliness_rating)
+    kb = types.ReplyKeyboardMarkup(
+        keyboard=[
+            [types.KeyboardButton(text='bad', )],
+            [types.KeyboardButton(text='good', )],
+        ],
             resize_keyboard=True
         )
-        await message.answer("Your cleanliness rating: ", reply_markup=kb)
-        await state.update_data(food_rating=message.text)
-        data = await state.get_data()
-        print(data['food_rating'])
+    await message.answer("Your cleanliness rating: ", reply_markup=kb)
+    await state.update_data(food_rating=message.text)
+    data = await state.get_data()
+    print(data['food_rating'])
 
 
 @review_router.message(CulinaryReview.cleanliness_rating)
@@ -106,5 +110,5 @@ async def process_extra_comments(message: types.Message, state: FSMContext):
             INSERT INTO survey_results(name, visit_date, instagram_name,
             food_rating, cleanliness_rating, extra_comments)
             VALUES (?, ?, ?, ?, ?, ?)
-        """, (data['name'], data['visit_date'], data['instagram_username'], data['food_rating'], data ['cleanliness_rating'], data ['extra_comments']))
+        """, (data['name'], data['visit_date'], data['instagram_username'], data['food_rating'], data['cleanliness_rating'], data['extra_comments']))
         await state.clear()
