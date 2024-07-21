@@ -32,98 +32,72 @@ async def menu_categories(message: types.Message):
     )
 
 
-@menu_router.message(F.text == "Breakfasts")
+CATEGORIES = ("Breakfasts", "Soups", "Basic", "Beverage")
+
+
+@menu_router.message(F.text.in_(CATEGORIES))
 async def breakfasts_handler(message: types.Message):
     kb = types.ReplyKeyboardRemove()
     sqlquery = """
         SELECT dishes.*, categories.name FROM dishes 
         JOIN categories ON categories.id=dishes.categories_id
-        WHERE categories.name = ?
+        WHERE LOWER(categories.name) = ?
     """
-    categories = 'Breakfasts'
+    categories = message.text.lower()
+    print("Categories: ", categories)
 
-    dishes = database.fetch(
-        query=sqlquery,
-        params=(categories,)
-    )
-    print(dishes)
-    await message.answer("Dish category", reply_markup=kb)
-    for dish in dishes:
-        photo = FSInputFile(dish[3])
-        await message.answer_photo(
-            caption=f"Name: {dish[1]}\nPrice: {dish[2]}",
-            photo=photo
+    try:
+        print("Executing query with params:", (categories,))
+        dishes = database.fetch(
+            query=sqlquery,
+            params=(categories,)
         )
+    except Exception as e:
+        await message.answer("An error occurred while fetching data from the database.")
+        print(f"Database error: {e}")
+        return
 
+    print("Query result:", dishes)
+    if not dishes:
+        await message.answer("Unfortunately, there are no dishes in this category.")
+        return
 
-@menu_router.message(F.text == "Soups")
-async def soups_handler(message: types.Message):
-    kb = types.ReplyKeyboardRemove()
-    sqlquery = """
-        SELECT dishes.*, categories.name FROM dishes 
-        JOIN categories ON categories.id=dishes.categories_id
-        WHERE categories.name = ?
-    """
-    categories = 'Soups'
-
-    dishes = database.fetch(
-        query=sqlquery,
-        params=(categories,)
-    )
-    print(dishes)
-    await message.answer("Dish category", reply_markup=kb)
+    await message.answer(f"Dish category {categories}", reply_markup=kb)
     for dish in dishes:
-        photo = FSInputFile(dish[3])
-        await message.answer_photo(
-            caption=f"Name: {dish[1]}\nPrice: {dish[2]}",
-            photo=photo
-        )
+        try:
+            caption = f"Name: {dish.get('name')}\nPrice: {dish.get('price')}"
+            if dish.get('cover'):
+                photo = FSInputFile(dish.get('cover'))
+                await message.answer_photo(photo=photo, caption=caption)
+            else:
+                await message.answer(caption)
+        except Exception as e:
+            await message.answer(f"An error occurred while sending dish information.")
+            print(f"Error sending dish info: {e}")
 
-
-@menu_router.message(F.text == "Basic")
-async def basic_handler(message: types.Message):
-    kb = types.ReplyKeyboardRemove()
-    sqlquery = """
-        SELECT dishes.*, categories.name FROM dishes 
-        JOIN categories ON categories.id=dishes.categories_id
-        WHERE categories.name = ?
-    """
-    categories = 'Basic'
-
-    dishes = database.fetch(
-        query=sqlquery,
-        params=(categories,)
-    )
-    print(dishes)
-    await message.answer("Dish category", reply_markup=kb)
-    for dish in dishes:
-        photo = FSInputFile(dish[3])
-        await message.answer_photo(
-            caption=f"Name: {dish[1]}\nPrice: {dish[2]}",
-            photo=photo
-        )
-
-
-@menu_router.message(F.text == "Beverage")
-async def beverage_handler(message: types.Message):
-    kb = types.ReplyKeyboardRemove()
-    sqlquery = """
-        SELECT dishes.*, categories.name FROM dishes 
-        JOIN categories ON categories.id=dishes.categories_id
-        WHERE categories.name = ?
-    """
-    categories = 'Beverage'
-
-    dishes = database.fetch(
-        query=sqlquery,
-        params=(categories,)
-    )
-    print(dishes)
-    await message.answer("Dish category", reply_markup=kb)
-    for dish in dishes:
-        photo = FSInputFile(dish[3])
-        await message.answer_photo(
-            caption=f"Name: {dish[1]}\nPrice: {dish[2]}",
-            photo=photo
-        )
+# @menu_router.message(F.text.in_(CATEGORIES))
+# async def breakfasts_handler(message: types.Message):
+#     kb = types.ReplyKeyboardRemove()
+#     sqlquery = """
+#         SELECT dishes.*, categories.name FROM dishes
+#         JOIN categories ON categories.id=dishes.categories_id
+#         WHERE categories.name = ?
+#     """
+#     categories = message.text.lower()
+#     print("Categories: ", categories)
+#     dishes = database.fetch(
+#         query=sqlquery,
+#         params=(categories,)
+#     )
+#     print(dishes)
+#     if not dishes:
+#         await message.answer("Unfortunately, there are no dishes in this category.")
+#
+#     await message.answer(f"Dish category{categories}", reply_markup=kb)
+#     for dish in dishes:
+#         photo = FSInputFile(dish.get('cover'))
+#         await message.answer_photo(
+#             caption=f"Name: {dish.get('name')}\nPrice: {dish.get('price')}",
+#             photo=photo
+#         )
 

@@ -76,6 +76,7 @@ async def process_food_rating(message: types.Message, state: FSMContext):
     if message.text not in ['good', 'bad']:
         await message.answer("Please enter 'good' or 'bad'.")
         return
+    rating = 10 if message.text == 'good' else 5
     await state.set_state(CulinaryReview.cleanliness_rating)
     kb = types.ReplyKeyboardMarkup(
         keyboard=[
@@ -85,17 +86,18 @@ async def process_food_rating(message: types.Message, state: FSMContext):
             resize_keyboard=True
         )
     await message.answer("Your cleanliness rating: ", reply_markup=kb)
-    await state.update_data(food_rating=message.text)
+    await state.update_data(food_rating=rating)
     data = await state.get_data()
     print(data['food_rating'])
 
 
 @review_router.message(CulinaryReview.cleanliness_rating)
 async def cleanliness_rating(message: types.Message, state: FSMContext):
+        rating = 10 if message.text == 'good' else 5
         await state.set_state(CulinaryReview.extra_comments)
         kb = types.ReplyKeyboardRemove()
         await message.answer('Do you have any comments: ', reply_markup=kb)
-        await state.update_data(cleanliness_rating=message.text)
+        await state.update_data(cleanliness_rating=rating)
         data = await state.get_data()
         print(data['cleanliness_rating'])
 
