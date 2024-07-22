@@ -6,6 +6,9 @@ from database.database import Database
 load_dotenv()
 
 token = getenv('TOKEN')
+
+group = getenv('GROUP_TOKEN')
+
 bot = Bot(token=token)
 
 dp = Dispatcher()
