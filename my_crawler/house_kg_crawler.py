@@ -5,7 +5,7 @@ from pprint import pprint
 
 class HouseParser:
     MAIN_URL = 'https://www.house.kg/snyat-kvartiru'
-    BASE_URL = 'https://www.house.kg/'
+    BASE_URL = 'https://www.house.kg'
 
     def get_page(self):
         response = requests.get(HouseParser.MAIN_URL)
@@ -19,7 +19,7 @@ class HouseParser:
 
     def get_house_links(self):
         selector = Selector(text=self.page)
-        links = selector.css('div.listings-wrapper div.listing div.left-image a::attr(href)').getall()
+        links = selector.css('div.left-image a::attr(href)').getall()
         pprint(links)
         links = list(map(lambda l: f"{HouseParser.BASE_URL}{l}", links))
         return links[:3]
