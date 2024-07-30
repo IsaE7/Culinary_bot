@@ -56,3 +56,12 @@ class Queries:
     GET_RECIPES_BY_CATEGORY = '''
         SELECT name, price, cover FROM dishes WHERE cover = ?
     '''
+
+    CREATE_USER_WARNINGS_TABLE = ('''
+    CREATE TABLE IF NOT EXISTS user_warnings (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER,
+        chat_id INTEGER,
+        counter INTEGER DEFAULT 0
+    )
+    ''')

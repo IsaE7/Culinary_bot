@@ -15,6 +15,7 @@ class Database:
             connect.execute(Queries.DROP_DISHES)
             connect.execute(Queries.CREATE_DISHES_TABLE)
             connect.execute(Queries.POPULATE_DISHES)
+            connect.execute(Queries.CREATE_USER_WARNINGS_TABLE)
 
             connect.commit()
 
@@ -29,9 +30,13 @@ class Database:
 
             if fetchmany:
                 to_return = result.fetchall()
+                if not to_return:
+                    return None
                 return [dict(row) for row in to_return]
             else:
                 to_return = result.fetchone()
+                if not to_return:
+                    return None
                 return dict(to_return)
             # return result.fetchall()
 
